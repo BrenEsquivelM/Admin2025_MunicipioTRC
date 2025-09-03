@@ -1,26 +1,46 @@
 import { useEffect, useState } from "react";
-import { getUsuarios } from "./api";
+//import { getUsuarios } from "./api";
 //import reactLogo from './assets/react.svg'
 //import viteLogo from '/vite.svg'
 //import './App.css'
 
 
-interface Usuario{
+/*interface Usuario{
   id: number;
   nombre: string;
-}
+}*/
 
 function App() {
-  const [usuarios, setUsuarios] = useState<Usuario[]>([]);
-  const [error, setError] = useState<string | null> (null);
+  /*const [usuarios, setUsuarios] = useState<Usuario[]>([]);
+  const [error, setError] = useState<string | null> (null);*/
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
-    getUsuarios()
-          .then((data) => setUsuarios(data))
-          .catch((err) => setError(err.message));
+    fetch("http://localhost:3000/")
+    .then(res => {
+      console.log("Status:", res.status);
+      if(!res.ok){
+        throw new Error(`HTTP error! status: ${res.status}`); 
+      }
+      return res.text();//Aqui explicar miguel 
+    })
+    
+          .then(data  => setMessage(data))
+          .catch(err => {
+            console.error("Error al obtener datos", err);
+            setMessage("Error al obtener datos");
+          });
   }, []);
 
-  if(error) return <div> Error: {error}</div>;
+  return (
+    <div>
+      <h1> PRUEBA CORS</h1>
+      <p>{message}</p>
+    </div>
+  );
+}
+
+ /* if(error) return <div> Error: {error}</div>;
 
   return (
     <div>
@@ -32,7 +52,7 @@ function App() {
       </ul>
     </div>
   );
-}
+}*/
 
 //export default App;
   /*
